@@ -24,6 +24,10 @@ app.get('/', (req, res) => {
     res.send('Hello World!')
 })
 
+app.get('/api/hello', (req, res) => {
+    res.send("안녕하세요!")
+})
+
 app.post('/api/users/register', (req, res) => {
     // 회원가입 할때 필요한 정보들을 client에서 가져오면 그것들을 DB에 넣어준다.
     const user = new User(req.body)
@@ -55,7 +59,7 @@ app.post('/api/users/login', (req, res) => {
                 if(err) return res.status(400).send(err);
 
                 // 토큰을 저장한다. (위치는 쿠키, 로컬스토리지 등 여러 방법 존재)
-                res.cookie("x-auth", user.token)
+                res.cookie("x_auth", user.token)
                     .status(200)
                     .json({ loginSuccess: true, userId: user._id })
             })      
@@ -63,7 +67,7 @@ app.post('/api/users/login', (req, res) => {
     })
 })
 
-app.get('/api/users/auth', auth, (req, res)=> {
+app.get('/api/users/auth', auth, (req, res) => {
     // 여기까지 미들웨어를 통과한 것은 Authentication이 True라는 의미
     
     res.status(200).json({
